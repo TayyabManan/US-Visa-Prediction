@@ -30,6 +30,9 @@ artifact/*
 # Data
 *.csv
 
+# Reports
+PROJECT_REPORT.md
+
 # Notebook outputs
 notebook/*.html
 notebook/.ipynb_checkpoints/
