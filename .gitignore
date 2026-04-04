@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Artifacts (allow model.pkl only)
+artifact/*
+!artifact/model.pkl
+
+# Data
+*.csv
+
+# Notebook outputs
+notebook/*.html
+notebook/.ipynb_checkpoints/
+.ipynb_checkpoints/
