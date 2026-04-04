@@ -63,7 +63,7 @@ class DataForm:
 async def index(request: Request):
 
     return templates.TemplateResponse(
-            "visa.html",{"request": request, "context": "Rendering"})
+            "visa.html", context={"request": request, "context": "Rendering"})
 
 
 
@@ -158,7 +158,7 @@ async def predictRouteClient(request: Request):
 
         return templates.TemplateResponse(
             "visa.html",
-            {"request": request, "context": status},
+            context={"request": request, "context": status},
         )
 
     except Exception as e:
