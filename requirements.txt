@@ -1,11 +1,9 @@
 pandas
 numpy
 scikit-learn
-imblearn
 xgboost
 catboost
 lightgbm
-dill
 scipy
 PyYAML
 fastapi
@@ -13,5 +11,4 @@ uvicorn
 jinja2
 python-multipart
 shap>=0.42.0
-neuro_mf
 -e .

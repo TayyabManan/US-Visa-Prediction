@@ -11,11 +11,11 @@ app_port: 7860
 
 Predicts the likelihood of PERM labor certification approval using employer, applicant, and position data from historical DOL records.
 
-**Live demo**: [Hugging Face Spaces](#) *(update link after deployment)*
+**Live demo**: [Hugging Face Spaces](https://huggingface.co/spaces/TayyabManan/visa_prediction)
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-latest-009688)
-![XGBoost](https://img.shields.io/badge/XGBoost-latest-orange)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-latest-orange)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ## Overview
@@ -24,8 +24,8 @@ Predicts the likelihood of PERM labor certification approval using employer, app
 |---|---|
 | **Dataset** | EasyVisa — 25,480 historical PERM records |
 | **Features** | 10 input features (continent, education, wage, employer info, etc.) |
-| **Model** | XGBoost with SMOTEENN resampling |
-| **F1 Score** | 76% on unseen test data |
+| **Model** | Gradient Boosting with stacking ensemble selection + threshold tuning |
+| **Accuracy** | 73.2% on unseen test data (denied recall: 61.4%) |
 | **Explainability** | SHAP TreeExplainer with rule-based fallback |
 | **Class Split** | 66.8% Certified / 33.2% Denied |
 
@@ -41,20 +41,26 @@ Predicts the likelihood of PERM labor certification approval using employer, app
 ```
 .
 ├── app.py                          # FastAPI application
+├── train_model.py                  # Modal GPU training script (H100)
 ├── Dockerfile                      # Docker build for deployment
 ├── requirements.txt                # Python dependencies
 ├── setup.py                        # Package setup
 ├── artifact/
-│   └── model.pkl                   # Trained model (XGBoost + preprocessing pipeline)
+│   └── model.pkl                   # Trained model (Gradient Boosting + threshold tuning + preprocessing pipeline)
 ├── config/
 │   ├── model.yaml                  # Model hyperparameters
 │   └── schema.yaml                 # Data schema definition
+├── notebook/
+│   ├── 1_Exploratory_Data_Analysis.ipynb
+│   ├── 2_Feature_Engineering_and_Model_Selection.ipynb
+│   └── 3_Model_Evaluation.ipynb
+├── figures/                        # Saved plots for the project report (fig1–fig9)
 ├── templates/
 │   └── visa.html                   # Main UI (single-page app)
 └── visa_approval_prediction/
     ├── constants/                  # App config (host, port, file paths)
     ├── entity/
-    │   └── estimator.py            # visaModel wrapper (predict, predict_proba)
+    │   └── estimator.py            # visaModel + ThresholdClassifier
     ├── exception/                  # Custom exception handling
     ├── explainability/
     │   └── shap_explainer.py       # SHAP TreeExplainer integration
@@ -82,8 +88,8 @@ Predicts the likelihood of PERM labor certification approval using employer, app
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/visa-approval-predictor.git
-cd visa-approval-predictor
+git clone https://github.com/TayyabManan/US-Visa-Prediction.git
+cd US-Visa-Prediction
 
 # Create virtual environment and install dependencies
 python -m venv venv
@@ -143,7 +149,7 @@ docker run -p 7860:7860 visa-predictor
 ## Tech Stack
 
 - **Backend**: FastAPI + Uvicorn
-- **ML**: XGBoost, scikit-learn, SMOTEENN (imbalanced-learn)
+- **ML**: Gradient Boosting, XGBoost, LightGBM, CatBoost, scikit-learn (stacking ensemble, threshold tuning)
 - **Explainability**: SHAP TreeExplainer
 - **Frontend**: Jinja2 templates (vanilla HTML/CSS/JS)
 - **Deployment**: Docker, Hugging Face Spaces

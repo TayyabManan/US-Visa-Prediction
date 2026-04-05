@@ -4,26 +4,27 @@ grid_search:
   params:
     cv: 5
     verbose: 1
-    scoring: f1
+    scoring: accuracy
 model_selection:
   module_0:
     class: RandomForestClassifier
     module: sklearn.ensemble
     params:
-      n_estimators: 200
-      max_depth: 15
+      n_estimators: 300
+      max_depth: 20
       max_features: sqrt
       random_state: 42
       n_jobs: -1
     search_param_grid:
       n_estimators:
-      - 100
       - 200
       - 300
+      - 500
       max_depth:
-      - 10
+      - 15
       - 20
       - 30
+      - null
       max_features:
       - sqrt
       - log2
@@ -31,19 +32,19 @@ model_selection:
     class: GradientBoostingClassifier
     module: sklearn.ensemble
     params:
-      n_estimators: 200
-      learning_rate: 0.1
+      n_estimators: 300
+      learning_rate: 0.05
       max_depth: 5
       random_state: 42
     search_param_grid:
       n_estimators:
-      - 100
       - 200
       - 300
+      - 500
       learning_rate:
+      - 0.01
       - 0.05
       - 0.1
-      - 0.2
       max_depth:
       - 3
       - 5
@@ -52,22 +53,67 @@ model_selection:
     class: XGBClassifier
     module: xgboost
     params:
-      n_estimators: 200
-      learning_rate: 0.1
+      n_estimators: 300
+      learning_rate: 0.05
       max_depth: 5
       random_state: 42
       eval_metric: logloss
-      use_label_encoder: false
     search_param_grid:
       n_estimators:
-      - 100
       - 200
       - 300
+      - 500
       learning_rate:
+      - 0.01
       - 0.05
       - 0.1
-      - 0.2
       max_depth:
+      - 3
+      - 5
+      - 7
+  module_3:
+    class: LGBMClassifier
+    module: lightgbm
+    params:
+      n_estimators: 300
+      learning_rate: 0.05
+      max_depth: 5
+      random_state: 42
+      is_unbalance: true
+      verbose: -1
+    search_param_grid:
+      n_estimators:
+      - 200
+      - 300
+      - 500
+      learning_rate:
+      - 0.01
+      - 0.05
+      - 0.1
+      max_depth:
+      - 3
+      - 5
+      - 7
+  module_4:
+    class: CatBoostClassifier
+    module: catboost
+    params:
+      iterations: 300
+      learning_rate: 0.05
+      depth: 5
+      random_seed: 42
+      auto_class_weights: Balanced
+      verbose: 0
+    search_param_grid:
+      iterations:
+      - 200
+      - 300
+      - 500
+      learning_rate:
+      - 0.01
+      - 0.05
+      - 0.1
+      depth:
       - 3
       - 5
       - 7
