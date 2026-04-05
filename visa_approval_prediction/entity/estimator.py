@@ -16,6 +16,31 @@ class TargetValueMapping:
     
     
 
+class ThresholdClassifier:
+    """Wraps a trained model and applies a custom probability threshold for predict()."""
+    def __init__(self, base_model, threshold=0.5):
+        self.base_model = base_model
+        self.threshold = threshold
+
+    def predict(self, X):
+        import numpy as np
+        proba = self.base_model.predict_proba(X)[:, 1]
+        return (proba >= self.threshold).astype(int)
+
+    def predict_proba(self, X):
+        return self.base_model.predict_proba(X)
+
+    @property
+    def classes_(self):
+        return self.base_model.classes_
+
+    def __repr__(self):
+        return f"ThresholdClassifier({type(self.base_model).__name__}, threshold={self.threshold:.3f})"
+
+    def __str__(self):
+        return self.__repr__()
+
+
 class visaModel:
     def __init__(self, preprocessing_object: Pipeline, trained_model_object: object):
         """
